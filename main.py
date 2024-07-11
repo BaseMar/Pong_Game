@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 # Objects
 r_paddle = Paddle(screen, pos_x=750, pos_y=230, width=20, height=120, speed=OBJECT_SPEED, color="red")
 l_paddle = Paddle(screen, pos_x=50, pos_y=230, width=20, height=120, speed=OBJECT_SPEED, color="blue")
-ball = Ball(screen, pos_x=390, pos_y=290, radius=BALL_RADIUS, speed=OBJECT_SPEED-SLOW_DOWN_OBJECT, color="white")
+ball = Ball(screen, pos_x=screen.get_width()//2, pos_y=screen.get_height()//2, radius=BALL_RADIUS, speed=OBJECT_SPEED-SLOW_DOWN_OBJECT, color="white")
 
 game_is_on = True
 
@@ -34,12 +34,17 @@ while game_is_on:
     # Update paddles position
     r_paddle.update_position(pygame.K_UP, pygame.K_DOWN)
     l_paddle.update_position(pygame.K_w, pygame.K_s)
+
+    # Check for collisions with paddles
+    ball.handle_collision(r_paddle)
+    ball.handle_collision(l_paddle)
+
     ball.update_position()
 
     # Draw paddles
     r_paddle.draw_paddle()
     l_paddle.draw_paddle()
-    ball.draw_ball()
+    ball.draw()
 
     pygame.display.update()
     clock.tick(GAME_SPEED)
