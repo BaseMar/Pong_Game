@@ -1,7 +1,8 @@
 import pygame
+from scoreboard import Scoreboard
 
 class Ball:
-    def __init__(self, screen, pos_x, pos_y, radius, speed, color):
+    def __init__(self, screen, pos_x, pos_y, radius, speed, color, scoreboard):
         self.screen = screen
         self.pos_x = pos_x
         self.pos_y = pos_y
@@ -11,6 +12,7 @@ class Ball:
         self.x_bounce = -1
         self.y_bounce = -1
         self.update_rect()
+        self.score = scoreboard
 
     def draw(self):
         pygame.draw.circle(self.screen, self.color, (self.pos_x, self.pos_y), self.radius)
@@ -25,7 +27,11 @@ class Ball:
             self.y_bounce *= -1
 
         # Check if score
-        if self.pos_x <= 0 or self.pos_x >= self.screen.get_width():
+        if self.pos_x <= 0:
+            self.score.r_score += 1
+            self.reset()
+        elif self.pos_x >= self.screen.get_width():
+            self.score.l_score += 1
             self.reset()
 
         self.update_rect()
